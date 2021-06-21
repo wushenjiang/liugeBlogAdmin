@@ -1,24 +1,15 @@
-# liugeblogadmin
+# liugeBlogAdmin
 
-## Project setup
+
+## 项目介绍
+本项目是武神酱の博客的后台管理系统，主要是为了进行武神酱の博客的管理
+
+## 项目运行
+先安装依赖：
 ```
 npm install
 ```
-
-### Compiles and hot-reloads for development
+然后运行：
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
