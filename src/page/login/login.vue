@@ -7,7 +7,7 @@
     <div class="admin-login-header-box">
       <div class="admin-login-header-center center">
         <div class="admin-login-logo">
-          博客系统 | 登录
+          博客系统 | 登录 测试自动化提交
         </div>
       </div>
     </div>
