@@ -24,7 +24,8 @@
             label="轮播图"
             width="200">
           <template slot-scope="scope">
-            <el-image fit="scale-down" class="loop-image" :src="scope.row.imageUrl" width="180px"
+            <el-image fit="scale-down" class="loop-image" :src="scope.row.imageUrl"
+                      width="180px"
                       height="80px"></el-image>
           </template>
         </el-table-column>
@@ -102,7 +103,8 @@
                   :show-file-list="false"
                   :on-success="uploadSuccess"
                   :before-upload="beforeUpload">
-                <el-image fit="scale-down" v-if="loop.imageUrl !== ''" :src="loop.imageUrl" class="avatar"></el-image>
+                <el-image fit="scale-down" v-if="loop.imageUrl !== ''" :src="loop.imageUrl"
+                          class="avatar"></el-image>
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
@@ -144,7 +146,7 @@ export default {
     }
   },
   methods: {
-    editClose(){
+    editClose() {
       this.loopDialogShow = false;
       this.resetLoop();
     },
@@ -196,14 +198,14 @@ export default {
         })
       } else {
         //发起更新
-        api.updateLoop(this.loop.id,this.loop).then(result => {
+        api.updateLoop(this.loop.id, this.loop).then(result => {
           if (result.code === api.success_code) {
             // 更新成功
             this.$message.success(result.message);
             this.loopDialogShow = false;
             this.listLoop();
             this.resetLoop();
-          }else{
+          } else {
             this.$message.error(result.message);
           }
         })
@@ -226,7 +228,7 @@ export default {
         // 上传成功
         // 回显图片
         //http://localhost:2020/portal/image/1602689715177_766081720289067008.png
-        this.loop.imageUrl = this.blog_constant.baseUrl + '/portal/image/' + response.data.path;
+        this.loop.imageUrl = response.data.path;
         this.$message.success(response.message);
       } else {
         this.$message.error(response.message);
@@ -268,6 +270,10 @@ export default {
 }
 </script>
 <style>
+.loop-box {
+  padding: 20px;
+}
+
 .loop-title {
   text-decoration: none;
 }

@@ -9,7 +9,11 @@ import leftMenu from './layout/left-menu';
 import topHeader from './layout/top-header';
 
 import constants from '@/utils/constants';
-
+// 导入mavonEditor
+// import mavonEditor from 'mavon-editor'
+// import 'mavon-editor/dist/css/index.css'
+// // 使用mavonEditor
+// Vue.use(mavonEditor);
 Vue.config.productionTip = false;
 Vue.prototype.blog_constant = constants;
 Vue.component('leftMenu',leftMenu);
@@ -28,6 +32,8 @@ router.beforeEach((to, from, next) => {
         checkToken().then(result =>{
             // console.log(result);
             if(result.code === success_code){
+                window.localStorage.setItem('avatar',result.data.avatar);
+                window.localStorage.setItem('userName',result.data.userName);
                 // 成功，判断用户角色
                 if(result.data.roles === 'role_admin'){
                     next();

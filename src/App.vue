@@ -11,10 +11,18 @@ export default {
 </script>
 
 <style>
+.float-left{
+  float:left;
+}
+.float-right{
+  float: right;
+}
 #app {
   min-width: 200px;
 }
-
+a{
+  text-decoration: none;
+}
 * {
   padding: 0;
   margin: 0;

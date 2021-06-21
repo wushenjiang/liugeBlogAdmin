@@ -21,7 +21,7 @@
                 <el-input v-model="liugeUser.userName" placeholder="用户名/邮箱地址"></el-input>
               </el-form-item>
               <el-form-item label="密码" required>
-                <el-input type="password" v-model="liugeUser.password" placeholder="请输入密码"></el-input>
+                <el-input type="password" v-model="originalPassword" placeholder="请输入密码"></el-input>
               </el-form-item>
               <el-form-item label="人类验证码" required>
                 <el-input v-model="loginInfo.verifyCode" placeholder="请输入右侧的验证码" @keyup.enter.native="doLogin"></el-input>
@@ -33,7 +33,6 @@
             </el-form>
           </el-col>
         </el-row>
-
       </div>
     </div>
     <!-- 底部内容-->
@@ -41,16 +40,18 @@
 </template>
 <script>
   import {doLogin,success_code} from '@/api/api'
-export default {
+  import {hex_md5} from "@/utils/md5";
+
+  export default {
   data() {
     return {
+      originalPassword:'',
       liugeUser: {
         userName: '',
         password: ''
       },
       loginInfo: {
         verifyCode: '',
-        captcha_key: ''
       },
       captchaPath: '',
     }
@@ -71,7 +72,7 @@ export default {
         this.toastError("账号不可以为空")
         return;
       }
-      if (this.liugeUser.password === '') {
+      if (this.originalPassword === '') {
         this.toastError("密码不可以为空")
         return;
       }
@@ -79,11 +80,12 @@ export default {
         this.toastError("验证码不可以为空")
         return;
       }
+      this.liugeUser.password = hex_md5(this.originalPassword);
       // 向服务器提交数据
-      doLogin(this.loginInfo.verifyCode,this.loginInfo.captcha_key,this.liugeUser).then(response => {
+      doLogin(this.loginInfo.verifyCode,this.liugeUser).then(response => {
+        console.log(response);
         // 处理登录结果
         // 判断状态
-
         if(response.code === success_code){
           // 如果成功
           // 成功则跳转 --> 判断角色 普通用户到门户首页 管理员到管理中心
@@ -102,8 +104,7 @@ export default {
       });
     },
     updateVerifyCode() {
-      this.captchaPath = "/user/captcha?captcha_key=" + this.loginInfo.captcha_key + "&random="
-          + Date.parse(new Date());
+      this.captchaPath = "/user/captcha?random=" + Date.parse(new Date());
     }
   },
   mounted() {

@@ -61,7 +61,7 @@ export default {
       // this.showAvatarCutter = false;
       if (response.code === api.success_code) {
         this.$message.success(response.message);
-        this.userInfo.avatar = this.blog_constant.baseUrl + '/portal/image/' + response.data.path;
+        this.userInfo.avatar = response.data.path;
       } else {
         this.$message.error(response.message);
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="catgory-box margin-bottom-10">
+  <div class="category-box margin-bottom-10">
     <div class="category-action-bar">
       <el-button type="primary" round size="medium" @click="showAddCategory">添加分类</el-button>
     </div>
@@ -262,6 +262,9 @@ export default {
 }
 </script>
 <style>
+.category-box{
+  padding: 20px;
+}
 .category-list-box .el-table{
   min-height: 200px;
 }

@@ -1,4 +1,6 @@
-const baseUrl = 'http://localhost:2020';
+const baseUrl = '';
+const imageBaseUrl = baseUrl + '/portal/image/'
 export default {
-    baseUrl
+    baseUrl,
+    imageBaseUrl
 }

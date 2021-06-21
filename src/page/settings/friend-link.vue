@@ -24,7 +24,8 @@
             label="logo"
             width="80">
           <template slot-scope="scope">
-            <el-image fit="scale-down" class="loop-image" :src="scope.row.logo" width="80px" height="80px"></el-image>
+            <el-image fit="scale-down" class="loop-image" :src="scope.row.logo"
+                      width="80px" height="80px"></el-image>
           </template>
         </el-table-column>
         <el-table-column
@@ -93,7 +94,7 @@
             <el-form-item label="logo">
               <div class="friend-link-image-upload" @click="showLinkLogoDialog">
                 <i class="el-icon-plus" v-if="link.logo === ''"></i>
-                <el-image v-else :src=" link.logo"></el-image>
+                <el-image v-else :src="link.logo"></el-image>
               </div>
             </el-form-item>
 
@@ -109,10 +110,20 @@
                      @crop-upload-success="cropUploadSuccess"
                      @crop-upload-fail="cropUploadFail"
                      v-model="showLinkCutter"
-                     :width="100"
-                     :height="100"
+                     :width="50"
+                     :height="50"
                      url="/admin/image/link"
                      img-format="png"></avatar-upload>
+      <el-dialog
+          title="删除提示"
+          :visible.sync="deleteDialogShow"
+          width="400px">
+        <span>你确定要删除: {{ deleteMessage }} 这个友情链接吗？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button round type="primary" @click="deleteDialogShow = false">取 消</el-button>
+          <el-button round type="danger" @click="doDeleteItem()">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -127,13 +138,15 @@ export default {
   },
   data() {
     return {
+      deleteMessage: '',
+      deleteDialogShow: false,
       showLinkCutter: false,
       friendLinkEditDialogCommitText: '添加',
       friendLinkEditTitle: '添加友情链接',
       friendLinkDialogShow: false,
       links: [],
       link: {
-        id:'',
+        id: '',
         name: '',
         logo: '',
         order: 0,
@@ -141,10 +154,29 @@ export default {
         url: ''
       },
       loading: false,
+      targetDeleteLinkId: ''
     }
   },
   methods: {
-    edit(item){
+    doDeleteItem() {
+      api.deleteFriendLink(this.targetDeleteLinkId).then(result => {
+        if (result.code === api.success_code) {
+          this.$message.success(result.message);
+          this.deleteDialogShow = false;
+          this.listLinks();
+          this.targetDeleteLinkId = '';
+        } else {
+          this.$message.error(result.message);
+        }
+      });
+    },
+    deleteItem(item) {
+      this.targetDeleteLinkId = item.id;
+      this.deleteMessage = item.name;
+      this.deleteDialogShow = true;
+
+    },
+    edit(item) {
       this.friendLinkEditDialogCommitText = '更 新';
       this.friendLinkEditTitle = '更新友情链接';
       // 回显数据
@@ -167,7 +199,7 @@ export default {
     cropUploadSuccess(response) {
       if (response.code === api.success_code) {
         this.$message.success(response.message);
-        this.link.logo = this.blog_constant.baseUrl + '/portal/image/' + response.data.path;
+        this.link.logo = response.data.path;
       } else {
         this.$message.error(response.message);
       }
@@ -189,9 +221,9 @@ export default {
       }
       // 判断是更新还是添加
       // 如果有ID的是更新
-      if(this.link.id !== ''){
+      if (this.link.id !== '') {
         // 更新
-        api.updateFriendLink(this.link,this.link.id).then(result => {
+        api.updateFriendLink(this.link, this.link.id).then(result => {
           if (result.code === api.success_code) {
             this.friendLinkDialogShow = false;
             this.$message.success(result.message);
@@ -202,7 +234,7 @@ export default {
             this.$message.error(result.message);
           }
         });
-      }else{
+      } else {
         api.postFriendLink(this.link).then(result => {
           if (result.code === api.success_code) {
             this.friendLinkDialogShow = false;
@@ -254,6 +286,10 @@ export default {
 }
 </script>
 <style>
+.settings-friend-link-box {
+  padding: 15px;
+}
+
 .friend-link-image-upload {
   width: 100px;
   height: 37px;
