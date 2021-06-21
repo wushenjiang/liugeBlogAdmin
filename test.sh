@@ -2,5 +2,5 @@
 echo "npm start--------------->"
 npm -v
 
-sudo npm install
-sudo npm run build
+npm install
+npm run build
